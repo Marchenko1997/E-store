@@ -62,6 +62,9 @@ def profile(request):
     context: dict[str, str] = {"title": "Home - Кабинет", "form": form}
     return render(request, "users/profile.html", context)
 
+def users_cart(request):
+    return render(request, "users/users_cart.html")
+
 
 @login_required
 def logout(request):
