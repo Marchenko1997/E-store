@@ -20,12 +20,15 @@ def cart_add(request, product_slug):
     else:
         Cart.objects.create(user=None, product=product, quantity=1)
 
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+    return redirect(request.META.get("HTTP_REFERER"))
 
 
 def cart_change(request, product_slug):
     ...
 
 
-def cart_remove(request, product_slug):
-    ...
+def cart_remove(request, cart_id):
+
+    cart = Cart.objects.get(id=cart_id)
+    cart.delete()
+    return redirect(request.META.get("HTTP_REFERER"))

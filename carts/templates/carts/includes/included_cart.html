@@ -45,7 +45,7 @@
                             <div class="col p-0"><strong>{{cart.products_price}} $</strong></div>
                             <div class="col p-0">
                               <a
-                                href="{% url "cart:cart_remove" 1 %}"
+                                href="{% url "cart:cart_remove" cart.id %}"
                                 class="remove-from-cart"
                                 data-cart-id=""
                               >
