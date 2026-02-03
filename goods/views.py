@@ -33,7 +33,8 @@ def catalog(request, category_slug=None):
     context = {
         "title": "Home — Каталог",
         "goods": current_page,
-        "slug_url": category_slug
+        "page_obj": current_page,
+        "slug_url": category_slug,
     }
     return render(request, "goods/catalog.html", context)
 

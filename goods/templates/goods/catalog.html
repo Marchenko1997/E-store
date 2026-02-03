@@ -103,7 +103,8 @@
                                         <p><strong>{{product.price}} $</strong></p> 
                                         {% endif %}
                                    
-                                        <a href="{% url "cart:cart_add" product.slug %}" class="btn add-to-cart">
+                                        <a href="{% url "cart:cart_add"%}" class="btn add-to-cart" data-product-id="{{product.id}}">
+                                            {% csrf_token %}
                                             <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
                                                 width="32" height="32">
                                         </a>
@@ -146,7 +147,7 @@
 
 
 {% block footer %}
-<footer class="py-4 bg-dark">
+<footer class="py-4 bg-dark mt-auto">
     <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023 - 2024</p>
     </div>

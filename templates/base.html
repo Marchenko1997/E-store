@@ -37,7 +37,7 @@
     <title>{{title}}</title>
   </head>
 
-  <body>
+  <body  class="d-flex flex-column min-vh-100">
     <header>
       <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div class="container">
@@ -152,7 +152,7 @@
         </div>
       </nav>
     </header>
-    <section>
+    <section class="flex-grow-1">
       <div class="container">
         <!-- Каталог и корзина с фиксированным расположением на странице -->
         <div class="row mt-1 position-fixed z-3">
@@ -208,7 +208,6 @@
     </section>
    {% block footer %}{% endblock  %}
     <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
-    <script src="{% static 'deps/js/jquery-events.js' %}"></script>
     <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
     <script src="{% static 'deps/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
   </body>
