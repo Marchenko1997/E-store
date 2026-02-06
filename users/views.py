@@ -1,23 +1,21 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import auth, messages
+from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.contrib import auth, messages
-
 from carts.models import Cart
 from orders.models import Order, OrderItem
+
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
-from django.db.models import Prefetch
 
 
 def login(request):
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
-
         if form.is_valid():
             username = request.POST["username"]
             password = request.POST["password"]
-
             user = auth.authenticate(username=username, password=password)
 
             session_key = request.session.session_key
@@ -26,8 +24,12 @@ def login(request):
                 auth.login(request, user)
                 messages.success(request, f"{username}, Вы вошли в аккаунт")
 
-
                 if session_key:
+                    # delete old authorized user carts
+                    forgot_carts = Cart.objects.filter(user=user)
+                    if forgot_carts.exists():
+                        forgot_carts.delete()
+                    # add new authorized user carts from anonimous session
                     Cart.objects.filter(session_key=session_key).update(user=user)
 
                 redirect_page = request.POST.get("next", None)
@@ -45,7 +47,6 @@ def login(request):
 def registration(request):
     if request.method == "POST":
         form = UserRegistrationForm(data=request.POST)
-
         if form.is_valid():
             form.save()
 
@@ -56,14 +57,15 @@ def registration(request):
 
             if session_key:
                 Cart.objects.filter(session_key=session_key).update(user=user)
-
             messages.success(
-                request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт"
+                request,
+                f"{user.username}, Вы успешно зарегистрированы и вошли в аккаунт",
             )
             return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserRegistrationForm()
-    context: dict[str, str] = {"title": "Home - Регистрация", "form": form}
+
+    context = {"title": "Home - Регистрация", "form": form}
     return render(request, "users/registration.html", context)
 
 
